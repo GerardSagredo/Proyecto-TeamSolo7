@@ -1,0 +1,4 @@
+Aciertos:
+Errores:
+Mazos usados hoy: mazosHoy
+Total de mazos usados: totalMazos

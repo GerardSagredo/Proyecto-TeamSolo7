@@ -5,20 +5,26 @@
 
 
 
+/*
+  //Al momento de leer respuestas o preguntas
+  // se usara scanf("%s",respuestas[i])
+*/
+
+
+//const char arreglo[100]: arreglo de 100 casillas, cada casilla un struct
+//incorporar arreglo de structs*
+void CrearMazo();
+void mostrarEstadisticas();
+void practicar(List *listaMazos);
+
 typedef struct{
-  const char respuestas[100]; //Al momento de leer respuestas o preguntas
-  int errores;                // se usara scanf("%s",respuestas[i])
+  char* preguntas;
+  char* respuestas;
   int aciertos;
+  int errores;                
   int contador;
-}soluciones;
 
-//const char arreglo[100]: arreglo de 100 casillas, cada casilla una oracion (string).
-
-typedef struct{
-  const char preguntas[100];
-  soluciones soluciones; //Ambos deben tener el mismo tamaño y
-                 // pregunta[i] y soluciones->respuestas[i] deben coincidir.
-}Mazo;
+}Preguntas;
 
 
 int main(void) {
@@ -44,6 +50,7 @@ int main(void) {
       switch (opcion){
         case 1: //Crear mazo
         printf("Creando mazo\n");
+        CrearMazo();
         break;
 
         case 2: //Mostrar mazos guardados
@@ -51,11 +58,12 @@ int main(void) {
         break;
 
         case 3: //Practicar
+        //practicar(listaMazos);
 
         break;
 
         case 4: //Revisar estadisticas
-
+        mostrarEstadisticas();
         break;
 
         case 5: //Eliminar un mazo
@@ -72,15 +80,117 @@ int main(void) {
   return 0;
 }
 
-/*void CrearMazo(List * Mazos){
+void CrearMazo(){
+  printf("ENTRA\n");
   List *listaMazos = createList();
-  char contenido[20];
-  scanf("%s",contenido);
-  Mazo* mazo  = ( Mazo*) malloc(sizeof(Mazo));
-  soluciones * mazo->soluciones = (soluciones *) malloc(sizeof(soluciones));
-  while(strcmp(contenido,"NULL")==0){
+  int cont=0,i=0;
+  int numpreguntas=6;
+  Preguntas* arregloPreguntas = calloc(numpreguntas, sizeof(arregloPreguntas));
+  //FILE *f = fopen ( "nmazos.txt", "r");
+ // char copia[1024];
+ // char* Nummazo = (char*) malloc (sizeof(char));
+  //Nummazo = strtok(copia, " ");
+  //printf("nombre %s",Nummazo);
+
+  //while(fgets(copia,1024,f) != NULL){
+    
+    FILE *fp = fopen ( "mazo1.txt", "r");
+    char texto[1024];
    
-    scanf("%s",contenido);
+    while(fgets(texto,1024,fp) != NULL){
+    
+    //printf("texto que entra: %s", texto);
+      if(cont==0){
+        cont++;
+        arregloPreguntas[i].preguntas=texto;
+        printf("pregunta %d: %s",i,arregloPreguntas[i].preguntas);
+        printf("pregunta [%d]: %s\n",i-1,arregloPreguntas[i-1].preguntas);
+      
+      }else{
+        cont--;
+        arregloPreguntas[i].respuestas=texto;
+        printf("respuesta%d: %s\n",i,arregloPreguntas[i].respuestas);
+        i++;
+      }
+    }
+
+  //}
+
+  
+    printf("-------- \n");
+    i=0;
+    printf("%d\n",numpreguntas);
+    while(i!=numpreguntas){
+      
+      printf("pregunta %d: %s\n",i,arregloPreguntas[i].preguntas);
+      printf("respuesta %d: %s\n",i,arregloPreguntas[i].respuestas);
+      i++;
   }
 
+
+
+
+
+
+  printf("SALE\n");
+}
+
+
+
+
+
+
+
+
+
+
+
+
+void mostrarEstadisticas(){
+
+  //Considerar guardar solo numeros en el txt para facilitar su reemplazo al guardar los datos. (referencia: https://www.cs.utah.edu/~germain/PPS/Topics/C_Language/file_IO.html)
+
+
+  char *filename = "datosGuardados.txt";
+  FILE *fp = fopen(filename, "r");
+
+  if (fp == NULL)
+  {
+    printf("Error: no se pudo abrir %s", filename);
+  }
+  else
+  {
+    // Se lee linea por linea, con un maximo de 256 bytes
+    const unsigned MAX_LENGTH = 256;
+    char buffer[MAX_LENGTH];
+
+    while (fgets(buffer, MAX_LENGTH, fp))
+        printf("%s", buffer);
+
+    // Cerrar documento
+    fclose(fp);
+
+  }
+  
+}
+
+/*void sobreescribir(){
+
+  
 }*/
+
+/*
+
+void practicar(List *listaMazos){
+  char mazo[20];
+  scanf("%s",mazo);
+  char *lmazos = firstList(listaMazos);
+
+  while(strcmp(mazo)){
+
+  }
+
+
+
+}
+*/
