@@ -6,8 +6,7 @@
 
 
 /*
-  //Al momento de leer respuestas o preguntas
-  // se usara scanf("%s",respuestas[i])
+  //cabros me robaron el celular y me quede sin whatsapp, si necesitan algo o el profe avisa algo porfa mandenlo al ds o escribanlo por aca //dale
 */
 
 
@@ -80,59 +79,52 @@ int main(void) {
   return 0;
 }
 
-void CrearMazo(){
-  printf("ENTRA\n");
-  List *listaMazos = createList();
-  int cont=0,i=0;
-  int numpreguntas=6;
-  Preguntas* arregloPreguntas = calloc(numpreguntas, sizeof(arregloPreguntas));
-  //FILE *f = fopen ( "nmazos.txt", "r");
- // char copia[1024];
- // char* Nummazo = (char*) malloc (sizeof(char));
-  //Nummazo = strtok(copia, " ");
-  //printf("nombre %s",Nummazo);
 
-  //while(fgets(copia,1024,f) != NULL){
-    
-    FILE *fp = fopen ( "mazo1.txt", "r");
+
+
+
+void CrearMazo(){
+  Preguntas* arregloPreguntas = malloc(1* sizeof(arregloPreguntas));
+  FILE *fp = fopen ( "mazo1.txt", "r");
+  
     char texto[1024];
-   
+    int cont=1;
+    int i;
+    int contpreguntas=0;
     while(fgets(texto,1024,fp) != NULL){
+      if(strlen(texto)==0) break;
     
-    //printf("texto que entra: %s", texto);
-      if(cont==0){
-        cont++;
-        arregloPreguntas[i].preguntas=texto;
-        printf("pregunta %d: %s",i,arregloPreguntas[i].preguntas);
-        printf("pregunta [%d]: %s\n",i-1,arregloPreguntas[i-1].preguntas);
       
-      }else{
+      if(strcmp(texto,"\n")!=0){
+        
+        if(cont==1){
+       contpreguntas++;
+       arregloPreguntas = realloc(arregloPreguntas,contpreguntas* sizeof(arregloPreguntas));
         cont--;
-        arregloPreguntas[i].respuestas=texto;
-        printf("respuesta%d: %s\n",i,arregloPreguntas[i].respuestas);
+        strcpy(arregloPreguntas[i].preguntas,texto);
+        printf("pregunta %d: %s",i,arregloPreguntas[contpreguntas].preguntas);
+      }else{
+        cont++;
+        strcpy(arregloPreguntas[i].respuestas,texto);
+        printf("respuesta %d: %s\n",i,arregloPreguntas[contpreguntas].respuestas);
         i++;
       }
-    }
 
-  //}
 
-  
-    printf("-------- \n");
-    i=0;
-    printf("%d\n",numpreguntas);
-    while(i!=numpreguntas){
+      }
+   
       
-      printf("pregunta %d: %s\n",i,arregloPreguntas[i].preguntas);
-      printf("respuesta %d: %s\n",i,arregloPreguntas[i].respuestas);
-      i++;
-  }
+      
+  
+    }
+    
+    
+printf("++++++++++++++++++++++++++++\n");
+ for(i=1;i<contpreguntas+1;i++){
+  printf("pregunta %d: %s",i,arregloPreguntas[i].preguntas);
+  printf("respuesta %d: %s\n",i,arregloPreguntas[i].respuestas);
+ }
 
-
-
-
-
-
-  printf("SALE\n");
 }
 
 
@@ -166,7 +158,6 @@ void mostrarEstadisticas(){
 
     while (fgets(buffer, MAX_LENGTH, fp))
         printf("%s", buffer);
-
     // Cerrar documento
     fclose(fp);
 
@@ -174,10 +165,20 @@ void mostrarEstadisticas(){
   
 }
 
-/*void sobreescribir(){
+void sobreescribir(Preguntas arregloPreguntas){//Esta funcion se encargara de actualizar los datos.
 
-  
-}*/
+//Se abre el mismo documento pero ahora para escribir.
+  char *filename = "datosGuardados.txt";
+  FILE *fptr;
+  fptr = fopen(filename, "w");
+  //Se introducen los nuevos valores en el mismo documento de texto
+  fprintf(fptr, "Aciertos: %d\n", arregloPreguntas.aciertos);
+  fprintf(fptr, "Errores: %d\n", arregloPreguntas.errores);
+  fprintf(fptr, "Mazos usados hoy: %d\n", arregloPreguntas.aciertos);
+  fprintf(fptr, "Total de mazos usados: %d\n", arregloPreguntas.aciertos);
+
+  fclose(fptr);
+}
 
 /*
 
