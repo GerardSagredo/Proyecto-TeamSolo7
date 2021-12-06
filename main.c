@@ -4,17 +4,10 @@
 #include "list.h"
 
 
-
-/*
-  //cabros me robaron el celular y me quede sin whatsapp, si necesitan algo o el profe avisa algo porfa mandenlo al ds o escribanlo por aca //dale
-*/
-
-
-//const char arreglo[100]: arreglo de 100 casillas, cada casilla un struct
-//incorporar arreglo de structs*
 void CrearMazo();
 void mostrarEstadisticas();
 void practicar(List *listaMazos);
+//void sobreescribir(Preguntas,int,int);
 
 typedef struct{
   char* preguntas;
@@ -26,7 +19,7 @@ typedef struct{
 }Preguntas;
 
 
-int main(void) {
+int main(void) {//Interfaz de la app
   printf("\n  --------------------------------\n");
   printf("    ** MENU DE APLICACION ANKI **      \n");
   printf("  --------------------------------\n");
@@ -35,7 +28,8 @@ int main(void) {
   printf("   » Opcion 3: Practicar \n");
   printf("   » Opcion 4: Revisar estadisticas \n");
   printf("   » Opcion 5: Eliminar un mazo \n");
-  printf("   » Opcion 6: Modificar carta \n\n");
+  printf("   » Opcion 6: Modificar carta \n");
+  printf("   » Opcion 7: Salir \n\n");
 
   int mazosHoy = 0; // Incluir y aumentar en 1 al empezar a usar un mazo
 
@@ -72,6 +66,10 @@ int main(void) {
         case 6: //Modificar carta
 
         break;
+
+        case 7: //Salir - Se debe guardar datos antes de salir
+        //sobreescribir(arregloPreguntas,mazosHoy,totalMazos);
+        break;
       }
 
   }
@@ -85,19 +83,20 @@ int main(void) {
 
 void CrearMazo(){
   Preguntas* arregloPreguntas = malloc(1* sizeof(arregloPreguntas));
+
   FILE *fp = fopen ( "mazo1.txt", "r");
   
-    char texto[1024];
-    int cont=1;
-    int i;
-    int contpreguntas=0;
-    while(fgets(texto,1024,fp) != NULL){
-      if(strlen(texto)==0) break;
+  char texto[1024];
+  int cont=1;
+  int i;
+  int contpreguntas=0;
+  while(fgets(texto,1024,fp) != NULL){
+    if(strlen(texto)==0) break;
     
       
-      if(strcmp(texto,"\n")!=0){
+    if(strcmp(texto,"\n")!=0){
         
-        if(cont==1){
+      if(cont==1){
        contpreguntas++;
        arregloPreguntas = realloc(arregloPreguntas,contpreguntas* sizeof(arregloPreguntas));
         cont--;
@@ -110,46 +109,25 @@ void CrearMazo(){
         i++;
       }
 
-
-      }
-   
-      
-      
-  
     }
-    
-    
-printf("++++++++++++++++++++++++++++\n");
+   
+  }
  for(i=1;i<contpreguntas+1;i++){
-  printf("pregunta %d: %s",i,arregloPreguntas[i].preguntas);
-  printf("respuesta %d: %s\n",i,arregloPreguntas[i].respuestas);
- }
+    printf("pregunta %d: %s",i,arregloPreguntas[i].preguntas);
+    printf("respuesta %d: %s\n",i,arregloPreguntas[i].respuestas);
+  }
 
 }
 
-
-
-
-
-
-
-
-
-
-
-
 void mostrarEstadisticas(){
-
-  //Considerar guardar solo numeros en el txt para facilitar su reemplazo al guardar los datos. (referencia: https://www.cs.utah.edu/~germain/PPS/Topics/C_Language/file_IO.html)
-
-
+  //Se abre el documento en busqueda de datos guardados
   char *filename = "datosGuardados.txt";
   FILE *fp = fopen(filename, "r");
 
-  if (fp == NULL)
+  if (fp == NULL) //Si algo falla
   {
     printf("Error: no se pudo abrir %s", filename);
-  }
+  } 
   else
   {
     // Se lee linea por linea, con un maximo de 256 bytes
@@ -165,7 +143,8 @@ void mostrarEstadisticas(){
   
 }
 
-void sobreescribir(Preguntas arregloPreguntas){//Esta funcion se encargara de actualizar los datos.
+void sobreescribir(Preguntas arregloPreguntas, int mazosHoy, int totalMazos){//Esta funcion se encargara de actualizar los datos.
+//Debe ser ejecutada al salir de la app.
 
 //Se abre el mismo documento pero ahora para escribir.
   char *filename = "datosGuardados.txt";
@@ -174,13 +153,11 @@ void sobreescribir(Preguntas arregloPreguntas){//Esta funcion se encargara de ac
   //Se introducen los nuevos valores en el mismo documento de texto
   fprintf(fptr, "Aciertos: %d\n", arregloPreguntas.aciertos);
   fprintf(fptr, "Errores: %d\n", arregloPreguntas.errores);
-  fprintf(fptr, "Mazos usados hoy: %d\n", arregloPreguntas.aciertos);
-  fprintf(fptr, "Total de mazos usados: %d\n", arregloPreguntas.aciertos);
+  fprintf(fptr, "Mazos usados hoy: %d\n", mazosHoy);
+  fprintf(fptr, "Total de mazos usados: %d\n", totalMazos);
 
   fclose(fptr);
-}
-
-/*
+}/*
 
 void practicar(List *listaMazos){
   char mazo[20];
