@@ -1,7 +1,13 @@
-# Proyecto TeamSolo7
+Para hacer uso de anki crear un archivo llamado "listado.txt" donde se debe colocar cada uno de los nombres de los archivos separados por un salto de linea cada uno.
 
-This is the Template Repl for C.
+Para la correcta lectura de los archivos se debe comenzar con indicar con numeros la cantidad de preguntas que contenga el archivo. En una nueva linea se comenzara el ingreso de la pregunta y tambien se debera saltar de linea para ingresar la respuesta. Repetir hasta completar la 
+cantidad de preguntas ingresada.
 
-C is a low-level and cross-platform imperative language. It was created in 1972 and many other languages have been influenced by it.
-
-[While there isn't "official" C documentation, check out Microsoft's resources here](https://docs.microsoft.com/en-us/cpp/c-language).
+Ejemplo dentro un mazo:
+3
+pregunta1
+respuesta1
+pregunta2
+respuesta2 
+pregunta3 
+respuesta3

@@ -10,8 +10,8 @@ void practicar(List *listaMazos);
 //void sobreescribir(Preguntas,int,int);
 
 typedef struct{
-  char* preguntas;
-  char* respuestas;
+  char preguntas[20];
+  char respuestas[20];
   int aciertos;
   int errores;                
   int contador;
@@ -33,7 +33,7 @@ int main(void) {//Interfaz de la app
 
   int mazosHoy = 0; // Incluir y aumentar en 1 al empezar a usar un mazo
 
- //Cargar totalMazos (uso historico de mazos)
+ //Cargar las variables a partir de los datosGuardados.txt(pendiente)
 
   int estadisticas[4]; //Este arreglo incluye: int_errores, int_aciertos, mazosHoy, totalMazos.
 
@@ -69,7 +69,7 @@ int main(void) {//Interfaz de la app
 
         case 7: //Salir - Se debe guardar datos antes de salir
         //sobreescribir(arregloPreguntas,mazosHoy,totalMazos);
-        break;
+        return 0;
       }
 
   }
@@ -82,41 +82,30 @@ int main(void) {//Interfaz de la app
 
 
 void CrearMazo(){
-  Preguntas* arregloPreguntas = malloc(1* sizeof(arregloPreguntas));
-
+  printf("ENTRA\n");
   FILE *fp = fopen ( "mazo1.txt", "r");
+  char texto[20];
+  int cantpreg,i=0,cont=0;
+  fscanf(fp,"%d", &cantpreg);   //lee y almacena en variable la cantidad de preguntas indicada.
+
+  printf("%d\n", cantpreg);
+  Preguntas* arregloPreguntas = malloc(cantpreg * sizeof(arregloPreguntas));
+  fgets(texto,1024,fp);
+
+  while(i!=cantpreg){
+   ;
+    strcpy(arregloPreguntas[i].preguntas,fgets(texto,20,fp));
+    strcpy(arregloPreguntas[i].respuestas,fgets(texto,20,fp));
+    i++;
+
+  }
   
-  char texto[1024];
-  int cont=1;
-  int i;
-  int contpreguntas=0;
-  while(fgets(texto,1024,fp) != NULL){
-    if(strlen(texto)==0) break;
+  for(i=0;i<cantpreg;i++){
     
-      
-    if(strcmp(texto,"\n")!=0){
-        
-      if(cont==1){
-       contpreguntas++;
-       arregloPreguntas = realloc(arregloPreguntas,contpreguntas* sizeof(arregloPreguntas));
-        cont--;
-        strcpy(arregloPreguntas[i].preguntas,texto);
-        printf("pregunta %d: %s",i,arregloPreguntas[contpreguntas].preguntas);
-      }else{
-        cont++;
-        strcpy(arregloPreguntas[i].respuestas,texto);
-        printf("respuesta %d: %s\n",i,arregloPreguntas[contpreguntas].respuestas);
-        i++;
-      }
-
-    }
-   
+    printf("p[%d]:%s\n",i,arregloPreguntas[i].preguntas);
+    printf("r[%d]:%s\n",i,arregloPreguntas[i].respuestas);
+    printf("----------------------------\n");
   }
- for(i=1;i<contpreguntas+1;i++){
-    printf("pregunta %d: %s",i,arregloPreguntas[i].preguntas);
-    printf("respuesta %d: %s\n",i,arregloPreguntas[i].respuestas);
-  }
-
 }
 
 void mostrarEstadisticas(){
